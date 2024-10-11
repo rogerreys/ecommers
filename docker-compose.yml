@@ -1,0 +1,58 @@
+networks:
+  site_network:
+    driver: bridge
+
+services:
+  my_mysql:
+    image: mysql:5.7
+    container_name: db-store-page
+    volumes:
+      - ./database/mysql:/var/lib/mysql/
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: dbs
+      MYSQL_USER: dbu
+      MYSQL_PASSWORD: dbpw
+    ports:
+      - 33066:3306
+    networks:
+      - site_network
+    command: --innodb-buffer-pool-size=512M --max-connections=100 --skip-log-bin
+        
+  wordpress:
+    image: wordpress:latest
+    container_name: wd-store-page
+    expose:
+      - 80
+    ports:
+      - 8099:80
+    restart: always
+    environment:
+      WORDPRESS_DB_NAME: dbs
+      WORDPRESS_DB_USER: dbu
+      WORDPRESS_DB_PASSWORD: dbpw
+      WORDPRESS_DB_HOST: db-store-page
+      SERVER_NAME: localhost
+      WORDPRESS_MEMORY_LIMIT: 256M
+      PHP_MAX_EXECUTION_TIME: 300
+    volumes:
+      - ./site:/var/www/html
+      # - ./php.ini:/usr/local/etc/php/conf.d/php.ini
+    depends_on:
+      - my_mysql
+    networks:
+      - site_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: php-admin-store-page
+    ports:
+        - "4283:80"
+    environment:
+        PMA_HOST: my_mysql
+        MYSQL_ROOT_PASSWORD: rootpw
+    depends_on:
+      - my_mysql
+    networks:
+      - site_network

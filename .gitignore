@@ -1,0 +1,7 @@
+database/
+site/wp-content/uploads/
+nginx.conf/
+
+php.*
+
+credenciales.md
