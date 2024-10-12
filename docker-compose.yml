@@ -38,6 +38,7 @@ services:
       PHP_MAX_EXECUTION_TIME: 300
     volumes:
       - ./site:/var/www/html
+      - ./site/.htaccess:/var/www/html/.htaccess
       # - ./php.ini:/usr/local/etc/php/conf.d/php.ini
     depends_on:
       - my_mysql
