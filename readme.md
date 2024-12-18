@@ -7,3 +7,6 @@ Categorias
 
 Etiquetas
 - Puede tener varias etiquetas
+
+# Comando
+docker-compose up -d
