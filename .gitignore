@@ -1,7 +1,7 @@
 database/
 site/wp-content/uploads/
 nginx.conf/
-
+src/
 php.*
 
 credenciales.md
